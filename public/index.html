@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/img/Carwash-Logo.png" />
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Icons for Materialize CSS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>Schedule</title>
+</head>
+<body class="blue lighten-2">
+
+    <!-- Nav Bar -->
+    <div class="navbar-fixed">
+        <nav class="z-depth-0 blue lighten-2">
+            <div class="nav-wrapper container">
+                
+                <!-- Company Logo -->
+                <a class="brand-logo center">
+                    <img src="img/Carwash-Logo.png" alt="Car Wash Logo" style="width: 90px;">
+                </a>
+                
+                <!-- Nav Bar buttons -->
+                <ul id="nav-mobile-right" class="right">
+                    <!-- Register button -->
+                    <li class="logged-out" style="display: none;">
+                        <button id="register" class="btn orange modal-trigger grey-text text-darken-4 waves-effect" data-target="modal-register">Register</button>
+                    </li>
+                    <!-- Settings button -->
+                    <li class="logged-in waves-effect" style="display: none;">
+                        <a class="black-text modal-trigger" id="settings-button" data-target="modal-settings">
+                            <i class="material-icons">settings</i>
+                        </a>
+                    </li>
+                </ul>
+                <ul id="nav-mobile-left" class="left">
+                    <!-- Login button -->
+                    <li class="logged-out" style="display: none;">
+                        <button id="login" class="btn orange modal-trigger grey-text text-darken-4 waves-effect" data-target="modal-login">Login</button>
+                    </li>
+                    <!-- Logout button -->
+                    <li class="logged-in" style="display: none;">
+                        <button id="logout" class="btn orange grey-text text-darken-4 waves-effect">Logout</button>
+                    </li>
+                </ul>
+    
+            </div>
+        </nav>
+    </div>
+
+    <!-- Logged out message -->
+    <div id="logged-out-message" class="card logged-out">
+        <div class="card-content green lighten-1">
+            <span class="card-title center">
+                <h5>To view or make changes to the schedule, please login.</h5>
+            </span>
+        </div>
+    </div>
+
+    <div id="content" class="white logged-in">
+        <!-- Calendar Header -->
+        <div id="calendar-header" class="center">
+            <button id="prevMonthButton" class="btn-floating blue waves-effect">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            <!-- Download button -->
+            <div id="download-button-container" style="visibility: hidden;">
+                <a id="download-button" class="waves-effect" style="transform: scale(1.2); display:inline-flex;">
+                    <i class="material-icons">file_download</i>
+                </a>
+            </div>
+            <h4 id="current-month" class="center-text">(Current Month)</h4>
+            <!-- Edit button -->
+            <div id="edit-button-container">
+                <button id="edit-button" class="btn-flat waves-effect waves-green center logged-in">
+                    <i class="material-icons">edit</i>
+                </button>
+            </div>
+            <button id="nextMonthButton" class="btn-floating blue waves-effect">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </div>
+
+        <!-- calendar table -->
+        <div class="table-container center">
+            <table class="center z-depth-3" id="calendar">
+                <div class="sticky-wrapper">
+                    <thead>
+                        <tr id="day-of-week-header">
+                            <td class="center">Sunday</td>
+                            <td class="center">Monday</td>
+                            <td class="center">Tuesday</td>
+                            <td class="center">Wednesday</td>
+                            <td class="center">Thursday</td>
+                            <td class="center">Friday</td>
+                            <td class="center">Saturday</td>
+                        </tr>
+                    </thead>
+                </div>
+            </table>
+        </div>
+        <h6 class="center" id="unverified-message" style="display: none; padding: 20px;">
+            *Once your account has been verified, you will have access to the schedule*
+        </h6>
+        <div id="table-footer" class="center">
+            <div class="open-close-legend">Open:<div id="open-time">8:00am</div></div>
+            <div class="open-close-legend">Close:<div id="close-time">8:00pm</div></div>
+        </div>
+    </div>
+
+    <!-- REGISTER MODAL -->
+    <div id="modal-register" class="modal opacity-0.3">
+        <div class="modal-content">
+            <h4>Register</h4><br />
+            <form id="register-form">
+                <div class="input-field">
+                    <input placeholder="Name" id="register-name" required>
+                </div>
+                <div class="input-field">
+                    <input type="email" id="register-email" required>
+                    <label for="register-email">Email Address</label>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="register-password" required>
+                    <label for="register-password">Password</label>
+                </div>
+                <button class="btn blue darken-2 z-depth-0">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL -->
+    <div id="modal-login" class="modal opacity-0.3">
+        <div class="modal-content">
+            <h4>Login</h4><br />
+            <form id="login-form">
+                <div class="input-field">
+                    <input type="email" id="login-email" required>
+                    <label for="login-email">Email Address</label>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="login-password" required>
+                    <label for="login-password">Password</label>
+                </div>
+                <button class="btn blue darken-2 z-depth-0">Login</button>
+                <br>
+                <div style="margin-top: 14px;">
+                    <a class="reset-password modal-trigger" data-target="modal-password-reset">Reset password</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="modal-settings" class="modal opacity-0.3">
+        <div class="modal-content">
+            <h3>Settings</h3><br/>
+            <div id="admin-settings" style="display: none;">
+                <br>
+                <div id="admin-employee-settings">
+                    <h4>Employees</h4>
+                    <hr>
+                    <h5>Current:</h5>
+                    <ul id="current-employees"></ul>
+                    <br>
+                    <h5>Add new employee:</h5>
+                    <div id="new-employee-submit" style="display: flex;">
+                        <form id="add-employee-form">
+                            <span class="input-field" style="margin: 0; margin-right: 10px;">
+                                <input id="new-employee" placeholder="Name">
+                            </span>
+                            <button id="add-new-employee-btn" class="btn" style="margin-top: auto; margin-bottom: auto;">Add</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="employee-settings" style="display: none;">
+            </div>
+            <br>
+            <a class="reset-password modal-trigger" data-target="modal-password-reset">Reset password</a>
+        </div>
+    </div>
+
+    <!-- PASSWORD RESET MODAL -->
+    <div id="modal-password-reset" class="modal opacity-0.3">
+        <div class="modal-content">
+            <h3>Reset Password</h3>
+            <form id="password-reset-form">
+                <div class="input-field">
+                    <input type="email" id="password-reset-email" required>
+                    <label for="password-reset-email">Email Address</label>
+                </div>
+                <button class="btn blue darken-2 z-depth-0">Reset</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- EDIT HISTORY MODAL -->
+    <div class="modal opacity-0.3" id="modal-history">
+        <div class="modal-content">
+            <h4 id="edits-day"></h4>
+            <ul id="edit-history-data" class="collection"></ul>
+        </div>
+    </div>
+
+    <!-- Weekly popup -->
+    <div class="orange" id="popup" style="z-index: 11;">
+        <p style="font-size: 16px; font-weight: 500; padding-right: 10px;">Weekly?</p>
+        <button class="btn-floating btn-small green" id="yes" style="margin: 0 4px;">
+            <i class="material-icons">check</i>
+        </button>
+        <button class="btn-floating btn-small red" id="no" style="margin: 0 4px;">
+            <i class="material-icons">close</i>
+        </button>
+    </div>
+    
+    <!-- Extra space at bottom of page -->
+    <div style="padding: 100px;"></div>
+
+
+    <!-- SCRIPTS -->
+
+    <!-- Compiled and minified JavaScript for Materialize CSS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- PDF Functionality -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script type="module" src="scripts/errors.js"></script>
+    <script type="module" src="scripts/monthData.js"></script>
+    <script type="module" src="scripts/data.js"></script>
+    <!-- DOM Script -->
+    <script type="module" src="scripts/index.js"></script>
+    <script type="module" src="scripts/auth.js"></script>
+    <script type="module" src="scripts/pdf.js"></script>
+</body>
+
+</html>

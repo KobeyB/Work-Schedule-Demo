@@ -1,0 +1,285 @@
+table {
+    border-collapse: collapse;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    min-width: max-content;
+    position: relative;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+body {
+    background-color: skyblue;
+}
+
+td {
+    background-color: white;
+    padding-top: 5px !important;
+    border: 2px solid lightgrey !important;
+    font-size: 16px;
+}
+
+thead td {
+    border: none !important;
+}
+
+thead {
+    background-color: lightskyblue;
+}
+
+.sticky-wrapper {
+    position: sticky !important;
+    top: 63px !important; /* adjust this value to match the height of your navbar */
+    z-index: 99;
+}
+
+thead td {
+    background-color: lightskyblue;
+}
+
+.table-filler {
+    background-color: lightgrey !important;
+}
+
+.day-number-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.day-number {
+    text-align: left;
+    padding-left: 5px;
+    font-style: oblique;
+    z-index: 11;
+}
+
+.edited-day {
+    text-align: right;
+    color: lightgrey;
+    font-size: smaller;
+    border-radius: 6px;
+    z-index: 10;
+}
+
+.edited-day:hover {
+    cursor: pointer;
+    animation: ease-shadow 0.2s ease-in forwards;
+}
+
+.edited-day:not(:hover) {
+    animation: ease-shadow-reverse 0.2s ease-in forwards;
+}
+
+.edited-cell, .edited-cell select {
+    background-color: white;
+    animation: flash-colour 0.8s ease-in;
+}
+
+.reset-password {
+    cursor: pointer;
+}
+
+.worker-name-slot {
+    padding: 5px;
+    font-weight: 600;
+    margin: 0 !important;
+}
+
+#calendar-header {
+    align-items: center; /* Vertical align the elements to the center */
+    margin-top: 5px;
+    display: flex;
+    max-width: 500px;
+    padding: 5px;
+    padding-bottom: 0;
+}
+
+#calendar-header-spacer {
+    flex: 1;
+}
+
+#edit-button-container {
+    flex: 1;
+    text-align: left;
+}
+
+#download-button-container {
+    flex: 1;
+}
+
+#nextMonthButton {
+    margin-left: auto;
+}
+
+#current-month {
+    flex: 1;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#table-footer {
+    margin-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    width: min-content;
+}
+
+.open-close-legend {
+    display: inline-flex;
+    padding: 5px;
+}
+
+.specific-time {
+    display: inline-flex;
+    margin: 0 !important;
+}
+
+select {
+    appearance: none;
+    border: 1px solid blue !important;
+}
+
+select:disabled {
+    color: black !important;
+    border: none !important;
+    margin: -6px -3px;
+    margin-bottom: -12px;
+}
+
+.bold-select {
+    font-weight: 600;
+}
+
+#content {
+    display: none;
+}
+
+#logged-out-message {
+    margin: 5vw 10vw;
+    display: none;
+}
+
+.remove-employee {
+    color: red;
+    display: inline-flex !important;
+    align-items: flex-end !important;
+}
+
+#popup {
+    position: absolute;
+    display: none;
+    width: fit-content;
+    border-radius: 20px;
+    box-shadow: 6px 6px 5px 0px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    transform: scale(0);
+    justify-content: center;
+    align-items: center;
+}
+
+#popup.showPopup {
+    display: flex;
+    transform: scale(1);
+    animation: scale-up 0.2s ease-in-out;
+}
+
+#edit-history-popup {
+    position: absolute;
+    background-color: skyblue;
+    width: fit-content;
+    border-radius: 20px;
+    box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.date-of-edit {
+    color: lightgrey;
+}
+.initial-value, .new-value {
+    font-size: larger;
+}
+.corner-div {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 16px;
+}
+.edits {
+    position: relative;
+}
+
+
+/*
+    Animations
+*/
+
+@keyframes scale-up {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+}
+
+@keyframes flash-colour {
+    0% {
+        background-color: lightgreen;
+    }
+    100% {
+        background-color: white;
+    }
+}
+
+@keyframes ease-shadow {
+    0% {
+        transform: scale(1);
+        color: lightgrey;
+    }
+    100% {
+        transform: scale(1.1);
+        color: blue;
+    }
+}
+
+@keyframes ease-shadow-reverse {
+    0% {
+        transform: scale(1.1);
+        color: blue;
+    }
+    100% {
+        transform: scale(1);
+        color: lightgrey;
+    }
+}
+
+/*
+    Mobile
+*/
+
+@media only screen and (max-width: 600px) {
+    td {
+        font-size: 3vw;
+    }
+    select:disabled {
+        color: black !important;
+        border: none !important;
+    }
+    #calendar-header {
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 20px;
+    }
+    
+}
