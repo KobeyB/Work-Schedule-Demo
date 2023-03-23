@@ -40,6 +40,11 @@ export const setupUI = (user, isAdmin, isVerified) => {
             // Hide download button
             downloadButton.style.visibility = 'hidden';
         }
+
+        // Show demo modal
+        var demoModalElement = document.getElementById("modal-demo");
+        var demoModal = M.Modal.getInstance(demoModalElement);
+        demoModal.open();
     }
     // When user logs out
     else {

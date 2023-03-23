@@ -1,2 +1,6 @@
 private
 .DS_Store
+.vscode
+.firebase
+.firebaserc
+*.json
