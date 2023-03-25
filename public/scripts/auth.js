@@ -118,8 +118,8 @@ loginForm.addEventListener('submit', (e) => {
         if (error.code === "auth/wrong-password") {
             alert("Incorrect password");
         }
-        else if (error.code === "auth/email-already-in-use") {
-            alert("The email provided already belongs to an account");
+        else if (error.code === "auth/user-not-found") {
+            alert(`No user exists with the email ${email}`);
         }
         else if (error.code === "auth/weak-password") {
             alert("Password must be at least 6 characters long");
@@ -133,16 +133,23 @@ loginForm.addEventListener('submit', (e) => {
 
 
 // Reset password
-const passwordResetForm = document.querySelector("#password-reset-form");
-passwordResetForm.addEventListener('submit', e => {
+const passwordResetButton = document.querySelector("#reset-password-button");
+passwordResetButton.addEventListener('click', e => {
 
-    // Get user info
-    const email = passwordResetForm['password-reset-email'].value;
+    // Get entered email
+    var emailInputField = document.getElementById("password-reset-email");
+    const email = emailInputField.value;
 
+    // Send password reset email
     sendPasswordResetEmail(auth, email)
     .then(() => {
         // Password reset email sent
         alert("Password reset email sent!");
+
+        // Close password reset modal
+        var passwordResetModalElement = document.getElementById("modal-password-reset");
+        var passwordResetModal = M.Modal.getInstance(passwordResetModalElement);
+        passwordResetModal.close();
     })
     .catch((error) => {
         console.error(error);
