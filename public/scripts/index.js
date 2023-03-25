@@ -9,7 +9,12 @@ import { getUsersName, isAdmin } from "./auth.js";
 const loggedOutLinks = document.querySelectorAll(".logged-out");
 const loggedInLinks = document.querySelectorAll(".logged-in");
 
+var currentUser;
+
 export const setupUI = (user, isAdmin, isVerified) => {
+
+    currentUser = user;
+
     // If user is logged in
     if (user) {
 
@@ -531,13 +536,19 @@ export function clearSettingsData() {
 
 function updateSettings(isAdmin) {
 
+    // Update Account info section
+    var nameSlot = document.getElementById("settings-name-slot");
+    var emailSlot = document.getElementById("settings-email-slot");
+
+    nameSlot.textContent = currentUser.displayName;
+    emailSlot.textContent = currentUser.email;
+
+    // Update admin settings
     var adminSettings = document.getElementById("admin-settings");
-    var employeeSettings = document.getElementById("employee-settings");
 
     if (isAdmin) {
         
         adminSettings.style.display = "block";
-        employeeSettings.style.display = "none";
         
         var currentEmployees = document.getElementById("current-employees");
     
@@ -565,7 +576,6 @@ function updateSettings(isAdmin) {
         
     }
     else {
-        employeeSettings.style.display = "block";
         adminSettings.style.display = "none";
     }
 

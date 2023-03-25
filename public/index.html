@@ -149,7 +149,9 @@
                 <button class="btn blue darken-2 z-depth-0">Login</button>
                 <br>
                 <div style="margin-top: 14px;">
-                    <a class="reset-password modal-trigger" data-target="modal-password-reset">Reset password</a>
+                    <a class="reset-password modal-trigger" data-target="modal-password-reset">
+                        Reset password
+                    </a>
                 </div>
             </form>
         </div>
@@ -159,6 +161,14 @@
     <div id="modal-settings" class="modal opacity-0.3">
         <div class="modal-content">
             <h3>Settings</h3><br/>
+            <h4>Your Account</h4>
+            <hr>
+            <p style="font-size: 20px;">
+                Name: <span id='settings-name-slot'></span>
+                <br>
+                Email: <span id="settings-email-slot"></span>
+            </p>
+            <br>
             <div id="admin-settings" style="display: none;">
                 <br>
                 <div id="admin-employee-settings">
@@ -177,8 +187,6 @@
                         </form>
                     </div>
                 </div>
-            </div>
-            <div id="employee-settings" style="display: none;">
             </div>
             <br>
             <a class="reset-password modal-trigger" data-target="modal-password-reset">Reset password</a>
