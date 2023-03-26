@@ -31,7 +31,7 @@ onAuthStateChanged(auth, user => {
                 setupUI(user, admin, verified);
             });
         });
-        
+
     }
     // User logged out
     else {
@@ -152,7 +152,12 @@ passwordResetButton.addEventListener('click', e => {
         passwordResetModal.close();
     })
     .catch((error) => {
-        console.error(error);
-        alert("There was an error sending the password reset email.");
+        if (error.code === "auth/user-not-found") {
+            alert("No user exists with the email: " + email);
+        }
+        else {
+            console.error(error);
+            alert("There was an error sending the password reset email.");
+        }
     });
 });
