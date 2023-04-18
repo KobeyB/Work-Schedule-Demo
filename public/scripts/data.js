@@ -11,10 +11,10 @@ import { NoPreviousDataError, NoFurtherDataError } from "./errors.js";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js";
-import { getDatabase, ref, set, get, push, remove, child } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+import { getDatabase, ref, set, get, push, child, onValue } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
 
-/*  
+/*
     Firebase data
 */
 
@@ -328,7 +328,7 @@ export async function removeEmployeeFromEmployeeList(employeeName) {
 
         if (snapshot.val()["employee"] == employeeObj["employee"]) {
             await setData(`employee-list/${key}`, null);
-            console.log("Data succesfully deleted.");
+            console.log("Data successfully deleted.");
         }
     }
     
