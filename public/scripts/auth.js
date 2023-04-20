@@ -1,6 +1,6 @@
 import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, 
     onAuthStateChanged, updateProfile, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
-import { setupUI, clearSettingsData } from "./index.js";
+import { setupUI, clearSettingsData } from "./index-v1.1.0.js";
 
 const auth = getAuth();
 
