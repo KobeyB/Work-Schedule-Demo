@@ -378,40 +378,36 @@ function addListenersToEditHistory() {
     })
 }
 
-function addEditHistoryFunctionalityToDropdown(dropdown) {
+function updateEditHistory(dropdown, event) {
 
-    // Add an event listener for changes
-    dropdown.addEventListener("change", function(event) {
+    var selectedOption = event.target.value;
 
-        var selectedOption = event.target.value;
-        var lastValue = this.lastValue;
+    var lastValue = dropdown.lastValue;
+    dropdown.lastValue = selectedOption;
 
-        this.lastValue = selectedOption;
+    var dropdownInfo = event.target.id.split("-");
+    var day = dropdownInfo[0];
+    var shift = dropdownInfo[1];
+    var dropdownType = dropdownInfo[2];
 
-        var dropdownInfo = event.target.id.split("-");
-        var day = dropdownInfo[0];
-        var shift = dropdownInfo[1];
-        var dropdownType = dropdownInfo[2];
+    // If the changed day has not been edited already
+    let editIndicator = document.querySelector(`#edited-day-${day}`);
+    if (editIndicator == null) {
+        var dayHeader = document.querySelector(`#day-number-${day}`);
+        dayHeader.appendChild(createEditedIndicator(day));
+    }
 
-        // If the changed day has not been edited already
-        let editIndicator = document.querySelector(`#edited-day-${day}`);
-        if (editIndicator == null) {
-            var dayHeader = document.querySelector(`#day-number-${day}`);
-            dayHeader.appendChild(createEditedIndicator(day));
-        }
+    // Current date and time
+    const date = new Date();
 
-        // Current date and time
-        const date = new Date();
-
-        // Add user's name to edit history
-        addToEditHistory(`shifts/${getDateRefString(getCurrentDateDisplayed())}/${day}/edit-history`, {
-            editor: getUsersName(),
-            date: date.toUTCString(),
-            lastValue: lastValue,
-            newValue: selectedOption,
-            shift: shift,
-            changeType: dropdownType
-        });
+    // Add user's name to edit history
+    addToEditHistory(`shifts/${getDateRefString(getCurrentDateDisplayed())}/${day}/edit-history`, {
+        editor: getUsersName(),
+        date: date.toUTCString(),
+        lastValue: lastValue,
+        newValue: selectedOption,
+        shift: shift,
+        changeType: dropdownType
     });
 }
 
@@ -625,73 +621,69 @@ function addEmployeeToDropdowns(employee) {
     });
 }
 
-function addSetDataFunctionToDropdown(dropdown) {
+function setDataOnChange(dropdown, event) {
 
-    dropdown.addEventListener("change", function() {
-        // Set the piece of data to the new value using the id
+    var selectedOption = event.target.value;
 
-        let date = getCurrentDateDisplayed();
+    // Set the piece of data to the new value using the id
 
-        // Create reference string
-        let pathData = this.id.split("-");
-        let path = `shifts/${getDateRefString(date)}`;
+    let date = getCurrentDateDisplayed();
 
-        pathData.forEach(data => {
-            path += `/${data}`;
-        });
+    // Create reference string
+    let pathData = dropdown.id.split("-");
+    let path = `shifts/${getDateRefString(date)}`;
 
-        setData(path, this.value);
+    pathData.forEach(data => {
+        path += `/${data}`;
     });
+
+    setData(path, dropdown.value);
+
 }
 
-function addWeeklyPopupFunctionalityToDropdown(dropdown) {
+function addWeeklyPopupFunctionality(dropdown, event) {
 
-    // Add an event listener for changes
-    dropdown.addEventListener("change", function(event) {
+    var selectedOption = event.target.value;
 
-        var selectedOption = event.target.value;
+    dropdown.lastValue = selectedOption;
 
-        this.lastValue = selectedOption;
+    var dropdownInfo = event.target.id.split("-");
+    var day = dropdownInfo[0];
+    var shift = dropdownInfo[1];
 
-        var dropdownInfo = event.target.id.split("-");
-        var day = dropdownInfo[0];
-        var shift = dropdownInfo[1];
+    // Need to determine the day of week based on the day of month
+    let dateDisplayed = getCurrentDateDisplayed();
+    var newDate = new Date(dateDisplayed.getFullYear(), dateDisplayed.getMonth(), day);
+    var dayOfWeek = dayOfWeekDict[newDate.getDay()];
 
-        // Need to determine the day of week based on the day of month
-        let dateDisplayed = getCurrentDateDisplayed();
-        var newDate = new Date(dateDisplayed.getFullYear(), dateDisplayed.getMonth(), day);
-        var dayOfWeek = dayOfWeekDict[newDate.getDay()];
+    // Make popup visible
+    popup.classList.add("showPopup");
 
-        // Make popup visible
-        popup.classList.add("showPopup");
+    // Get location of dropdown
+    var rect = event.target.getBoundingClientRect();
+    var x = rect.left + window.scrollX + 5;
+    var y = rect.top + window.scrollY + 45;
 
-        // Get location of dropdown
-        var rect = event.target.getBoundingClientRect();
-        var x = rect.left + window.scrollX + 5;
-        var y = rect.top + window.scrollY + 45;
+    popup.style.top = y + "px";
+    popup.style.left = x + "px";
 
-        popup.style.top = y + "px";
-        popup.style.left = x + "px";
+    var yesButton = document.getElementById("yes");
+    var noButton = document.getElementById("no");
 
-        var yesButton = document.getElementById("yes");
-        var noButton = document.getElementById("no");
+    yesButton.addEventListener("click", function() {
 
-        yesButton.addEventListener("click", function() {
-
-            // Add name to repeat-shifts for given day
-            setWeeklyEmployee(day, dayOfWeek, shift, selectedOption).then(() => {
-                location.reload();
-            });
-
-            // Hide popup
-            popup.classList.remove("showPopup");
+        // Add name to repeat-shifts for given day
+        setWeeklyEmployee(day, dayOfWeek, shift, selectedOption).then(() => {
+            location.reload();
         });
 
-        noButton.addEventListener("click", function() {
-            // Hide popup
-            popup.classList.remove("showPopup");
-        });
+        // Hide popup
+        popup.classList.remove("showPopup");
+    });
 
+    noButton.addEventListener("click", function() {
+        // Hide popup
+        popup.classList.remove("showPopup");
     });
 
     // Dismiss popup when clicked outside of popup
@@ -710,13 +702,22 @@ function addOnChangeToDropdowns(isAdmin) {
 
         dropdown.lastValue = dropdown.value;
 
-        addSetDataFunctionToDropdown(dropdown);
+        dropdown.addEventListener("change", function(event) {
+            var confirmed = verifyAndConfirmChange(event)
+            if (confirmed) {
+                setDataOnChange(this, event);
+                updateEditHistory(this, event);
+                if (isAdmin && dropdown.classList.contains("workers-dropdown")) {
+                    addWeeklyPopupFunctionality(this, event);
+                }
+            }
+            else {
+                // If the user cancels the change due to a conflict, set the value
+                // back to the original value
+                this.value = this.lastValue;
+            }
+        })
 
-        addEditHistoryFunctionalityToDropdown(dropdown);
-
-        if (isAdmin && dropdown.classList.contains("workers-dropdown")) {
-            addWeeklyPopupFunctionalityToDropdown(dropdown);
-        }
     });
     
 }
@@ -751,4 +752,33 @@ function updateOpenCloseTime() {
     else
         closeTimeElement.textContent = getWinterCloseTime();
 
+}
+
+function verifyAndConfirmChange(event) {
+
+    var selectedOption = event.target.value;
+
+    var dropdownInfo = event.target.id.split("-");
+    var day = dropdownInfo[0];
+    var shift = dropdownInfo[1];
+
+    var otherEmployee = null;
+
+    if (shift == 0) {
+        // Check if close shift has the same employee
+        otherEmployee = document.getElementById(`${day}-1-worker`)
+    }
+    else {
+        // Check if open shift has the same employee
+        otherEmployee = document.getElementById(`${day}-0-worker`)
+    }
+
+    if (otherEmployee.value == selectedOption) {
+        var confirmed = confirm(
+            "WARNING: The same employee is already working another shift that day. " +
+            "Click 'OK' if you would like to continue with the changes."
+        );
+        return confirmed;
+    }
+    return true;
 }
